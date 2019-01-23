@@ -111,3 +111,5 @@ byte mqttnumberoftrys = 3;
 // if false, no mqtt communcation is send or received (security feature to turn on when leaving the brewery
 // TODO: Not yet implemented!
 bool mqttCommunication = true;
+int mqtt_chip_key = ESP.getChipId();
+char mqtt_clientid[25];

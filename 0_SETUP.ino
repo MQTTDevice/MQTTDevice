@@ -10,12 +10,16 @@ void setup() {
     DBG_PRINTLN("SPIFFS Mount failed");
   }
 
+  // Set device name
+  snprintf(mqtt_clientid, 25, "ESP8266-%08X", mqtt_chip_key);
+
   // Einstellungen laden
   ESP.wdtFeed();
   loadConfig();
 
   // WiFi Manager
   ESP.wdtFeed();
+  WiFi.hostname(mqtt_clientid);
   WiFiManagerParameter cstm_mqtthost("host", "cbpi ip", mqtthost, 16);
   wifiManager.setSaveConfigCallback(saveConfigCallback);
   wifiManager.addParameter(&cstm_mqtthost);
@@ -28,7 +32,7 @@ void setup() {
 
   // ArduinoOTA aktivieren
   setupOTA();
-  
+
   // MQTT starten
   client.setServer(mqtthost, 1883);
   client.setCallback(mqttcallback);
@@ -69,7 +73,6 @@ void setupServer() {
 
   server.begin();
 }
-
 
 void setupOTA() {
   DBG_PRINT("Configuring OTA device...");

@@ -50,12 +50,17 @@ bool loadFromSpiffs(String path) {
 }
 
 void mqttreconnect() {
-  // Create MQTT Name from Chip ID
-  int mqtt_chip_key = ESP.getChipId();
-  char mqtt_clientid[25];
-  snprintf(mqtt_clientid, 25, "ESP8266-%08X", mqtt_chip_key);
-  // 10 Tries for reconnect
+  // globale defined, removed
 
+  // Create MQTT Name from Chip ID
+  //int mqtt_chip_key = ESP.getChipId();
+  //char mqtt_clientid[25];
+  //snprintf(mqtt_clientid, 25, "ESP8266-%08X", mqtt_chip_key);
+  // 10 Tries for reconnect
+  if ((numberOfActors + numberOfSensors) || inductionCooker.isEnabled) // subs available?
+  {
+    return;
+  }
   // Wenn Client nicht verbunden, Verbindung herstellen
   if (!client.connected()) {
     // Delay prüfen
@@ -64,7 +69,7 @@ void mqttreconnect() {
       DBG_PRINT(mqtt_clientid);
       for (int i = 0; i < mqttnumberoftrys; i++) {
         DBG_PRINT(".. Try #");
-        DBG_PRINT(i+1);
+        DBG_PRINT(i + 1);
         if (client.connect(mqtt_clientid)) {
           DBG_PRINT(".. Success. Subscribing.");
           goto Subscribe;
@@ -73,18 +78,18 @@ void mqttreconnect() {
       }
       mqttconnectlasttry = millis();
       DBG_PRINT(".. Failed. Trying again in ");
-      DBG_PRINT(mqttconnectdelay/1000);
+      DBG_PRINT(mqttconnectdelay / 1000);
       DBG_PRINTLN(" seconds");
       return;
-    }   
+    }
   }
 
-  Subscribe:
-    for (int i = 0; i < numberOfActors; i++) {
-      actors[i].mqtt_subscribe();
-      yield();
-    }
-    inductionCooker.mqtt_subscribe();
+Subscribe:
+  for (int i = 0; i < numberOfActors; i++) {
+    actors[i].mqtt_subscribe();
+    yield();
+  }
+  inductionCooker.mqtt_subscribe();
 
 }
 
