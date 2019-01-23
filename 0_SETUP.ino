@@ -7,7 +7,7 @@ void setup() {
   // Dateisystem laden
   ESP.wdtFeed();
   if (!SPIFFS.begin())  {
-    Serial.println("SPIFFS Mount failed");
+    DBG_PRINTLN("SPIFFS Mount failed");
   }
 
   // Einstellungen laden
@@ -72,26 +72,26 @@ void setupServer() {
 
 
 void setupOTA() {
-  Serial.print("Configuring OTA device...");
+  DBG_PRINT("Configuring OTA device...");
   TelnetServer.begin();   //Necesary to make Arduino Software autodetect OTA device
   ArduinoOTA.onStart([]() {
-    Serial.println("OTA starting...");
+    DBG_PRINTLN("OTA starting...");
   });
   ArduinoOTA.onEnd([]() {
-    Serial.println("OTA update finished!");
-    Serial.println("Rebooting...");
+    DBG_PRINTLN("OTA update finished!");
+    DBG_PRINTLN("Rebooting...");
   });
   ArduinoOTA.onProgress([](unsigned int progress, unsigned int total) {
     Serial.printf("OTA in progress: %u%%\r\n", (progress / (total / 100)));
   });
   ArduinoOTA.onError([](ota_error_t error) {
     Serial.printf("Error[%u]: ", error);
-    if (error == OTA_AUTH_ERROR) Serial.println("Auth Failed");
-    else if (error == OTA_BEGIN_ERROR) Serial.println("Begin Failed");
-    else if (error == OTA_CONNECT_ERROR) Serial.println("Connect Failed");
-    else if (error == OTA_RECEIVE_ERROR) Serial.println("Receive Failed");
-    else if (error == OTA_END_ERROR) Serial.println("End Failed");
+    if (error == OTA_AUTH_ERROR) DBG_PRINTLN("Auth Failed");
+    else if (error == OTA_BEGIN_ERROR) DBG_PRINTLN("Begin Failed");
+    else if (error == OTA_CONNECT_ERROR) DBG_PRINTLN("Connect Failed");
+    else if (error == OTA_RECEIVE_ERROR) DBG_PRINTLN("Receive Failed");
+    else if (error == OTA_END_ERROR) DBG_PRINTLN("End Failed");
   });
   ArduinoOTA.begin();
-  Serial.println("OTA OK");
+  DBG_PRINTLN("OTA OK");
 }

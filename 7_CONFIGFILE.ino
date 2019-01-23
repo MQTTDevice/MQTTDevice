@@ -1,15 +1,15 @@
 bool loadConfig() {
   File configFile = SPIFFS.open("/config.json", "r");
   if (!configFile) {
-    Serial.println("Failed to open config file");
+    DBG_PRINTLN("Failed to open config file");
     return false;
   } else {
-    Serial.println("opened config file");
+    DBG_PRINTLN("opened config file");
   }
 
   size_t size = configFile.size();
   if (size > 1024) {
-    Serial.println("Config file size is too large");
+    DBG_PRINTLN("Config file size is too large");
     return false;
   }
 
@@ -48,8 +48,8 @@ bool loadConfig() {
   // Read Sensors
   JsonArray& jsonsensors = json["sensors"];
   numberOfSensors = jsonsensors.size();
-  Serial.print("Number of Sensors loaded: ");
-  Serial.println(numberOfSensors);
+  DBG_PRINT("Number of Sensors loaded: ");
+  DBG_PRINTLN(numberOfSensors);
 
   if (numberOfSensors > 10) {
     numberOfSensors = 10;
@@ -92,7 +92,7 @@ bool loadConfig() {
 }
 
 void saveConfigCallback () {
-  Serial.println("Should save config");
+  DBG_PRINTLN("Should save config");
 }
 
 
@@ -103,7 +103,7 @@ bool saveConfig() {
 
   File configFile = SPIFFS.open("/config.json", "w");
   if (!configFile) {
-    Serial.println("Failed to open config file for writing");
+    DBG_PRINTLN("Failed to open config file for writing");
     return false;
   }
 

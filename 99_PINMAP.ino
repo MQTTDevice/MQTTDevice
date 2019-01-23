@@ -3,8 +3,8 @@
 1 
 2   D4
 3 
-4   D2
-5   D1
+4   D2        OLED Display (optional)
+5   D1        OLED Display (optional)
 6 
 7 
 8 

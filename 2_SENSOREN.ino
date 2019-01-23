@@ -19,24 +19,24 @@ class TemperatureSensor
 
     void Update() {
       if (millis() > (lastCalled + period)) {
-        Serial.print("Updating Sensor ");
-        Serial.print(sens_name);
-        Serial.print(". Value: ");
-        Serial.print(sens_value);
-        Serial.println(". ");
+        DBG_PRINT("Updating Sensor ");
+        DBG_PRINT(sens_name);
+        DBG_PRINT(". Value: ");
+        DBG_PRINT(sens_value);
+        DBG_PRINTLN(". ");
         
         DS18B20.requestTemperatures();
         sens_value = DS18B20.getTempC(sens_address);
 
         if (sens_value == -127.0) {
-          Serial.print("Sensor ");
-          Serial.print(sens_name);
-          Serial.println(" not found");
+          DBG_PRINT("Sensor ");
+          DBG_PRINT(sens_name);
+          DBG_PRINTLN(" not found");
         } else {
           if (sens_value == 85.0) {
-            Serial.print("Sensor ");
-            Serial.print(sens_name);
-            Serial.println(" Error");
+            DBG_PRINT("Sensor ");
+            DBG_PRINT(sens_name);
+            DBG_PRINTLN(" Error");
           } else {
             publishmqtt();
           }
@@ -72,9 +72,11 @@ class TemperatureSensor
         }
         for (int i = 0; i < 8; i++) {
           sens_address[i] = octets[i];
+#ifdef DEBUG
           Serial.print(sens_address[i], HEX);
+#endif
         }
-        Serial.println("");
+        DBG_PRINTLN("");
       }
       DS18B20.setResolution(sens_address, 10);
     }
@@ -132,12 +134,14 @@ byte searchSensors() {
   while (oneWire.search(addr)) {
 
     if ( OneWire::crc8( addr, 7) == addr[7]) {
-      Serial.print("Sensor found:");
+      DBG_PRINT("Sensor found:");
       for ( i = 0; i < 8; i++) {
         addressesFound[n][i] = addr[i];
+#ifdef DEBUG
         Serial.print(addr[i], HEX);
+#endif
       }
-      Serial.println("");
+      DBG_PRINTLN("");
       n += 1;
     }
     yield();

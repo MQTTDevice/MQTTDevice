@@ -30,6 +30,17 @@
 #include <ArduinoOTA.h>         // OTA
 /*########## KONSTANTEN #########*/
 
+/*############ DEBUG ############*/
+//#define DEBUG                 // Uncomment this line for debug output on serial monitor
+#ifdef DEBUG
+ #define DBG_PRINT(x)    Serial.print (x)
+ #define DBG_PRINTLN(x)  Serial.println (x)
+#else
+ #define DBG_PRINT(x)
+ #define DBG_PRINTLN(x)
+#endif
+/*############ DEBUG ############*/
+
 // OneWire
 #define ONE_WIRE_BUS D3 // Change this accordingly!
 OneWire oneWire(ONE_WIRE_BUS);

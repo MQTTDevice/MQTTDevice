@@ -78,8 +78,8 @@ class Actor
       if (client.connected()) {
         char subscribemsg[50];
         argument_actor.toCharArray(subscribemsg, 50);
-        Serial.print("Subscribing to ");
-        Serial.println(subscribemsg);
+        DBG_PRINT("Subscribing to ");
+        DBG_PRINTLN(subscribemsg);
         client.subscribe(subscribemsg);      
       }
 
@@ -89,8 +89,8 @@ class Actor
      if (client.connected()) {
         char subscribemsg[50];
         argument_actor.toCharArray(subscribemsg, 50);
-        Serial.print("Unsubscribing from ");
-        Serial.println(subscribemsg);
+        DBG_PRINT("Unsubscribing from ");
+        DBG_PRINTLN(subscribemsg);
         client.unsubscribe(subscribemsg);      
       }
     }
