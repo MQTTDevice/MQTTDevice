@@ -73,8 +73,28 @@ void setupServer() {
   server.on("/reqMiscSet", handleRequestMiscSet); // Misc menu
   server.on("/reqMisc", handleRequestMisc);       // Misc Infos für WebConfig
   server.on("/setMisc", handleSetMisc);           // Misc ändern
-  
-  server.onNotFound(handleWebRequests);           // Sonstiges
+
+  // FSBrowser initialisieren
+  server.on("/list", HTTP_GET, handleFileList);   // list directory
+  server.on("/edit", HTTP_GET, []() {             // load editor
+    if (!handleFileRead("/edit.htm")) {
+      server.send(404, "text/plain", "FileNotFound");
+    }
+  });
+  server.on("/edit", HTTP_PUT, handleFileCreate); // create file
+  server.on("/edit", HTTP_DELETE, handleFileDelete);  // delete file
+  // first callback is called after the request has ended with all parsed arguments
+  // second callback handles file uploads at that location
+  server.on("/edit", HTTP_POST, []() {
+    server.send(200, "text/plain", "");
+  }, handleFileUpload);
+  server.onNotFound([]() {
+    if (!handleFileRead(server.uri())) {
+      server.send(404, "text/plain", "FileNotFound");
+    }
+  });
+
+  // server.onNotFound(handleWebRequests);           // Sonstiges
 
   server.begin();
 }

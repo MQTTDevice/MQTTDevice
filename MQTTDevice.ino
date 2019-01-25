@@ -119,3 +119,6 @@ char mqtt_clientid[25];
 #define UPDATE  1000
 unsigned long lastToggledSys = 0;
 unsigned long lastToggled = 0;
+
+/*######### FileBrowser #########*/
+File fsUploadFile;                      // a File object to temporarily store the received file
