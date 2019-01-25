@@ -69,6 +69,11 @@ void setupServer() {
 
   server.on("/reboot", rebootDevice);             // reboots the whole Device
   server.on("/mqttOff", turnMqttOff);             // Turns off MQTT completly until reboot
+
+  server.on("/reqMiscSet", handleRequestMiscSet); // Misc menu
+  server.on("/reqMisc", handleRequestMisc);       // Misc Infos für WebConfig
+  server.on("/setMisc", handleSetMisc);           // Misc ändern
+  
   server.onNotFound(handleWebRequests);           // Sonstiges
 
   server.begin();

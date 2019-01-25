@@ -126,3 +126,41 @@ void mqttcallback(char* topic, byte* payload, unsigned int length) {
     yield();
   }
 }
+
+void handleRequestMiscSet() {
+  server.send(200, "application/json", "");
+}
+
+void handleRequestMisc() {
+  String request = server.arg(0);
+  String message;
+  if (request == "MQTTHOST") {
+    message = mqtthost;
+    goto SendMessage;
+  }
+
+SendMessage:
+  server.send(200, "text/plain", message);
+}
+
+void handleSetMisc() {
+  for (int i = 0; i < server.args(); i++) {
+    if (server.argName(i) == "reset") {
+      if (server.arg(i) == "1") {
+          WiFi.disconnect();
+          wifiManager.resetSettings();      } 
+    }
+    if (server.argName(i) == "clear") {
+      if (server.arg(i) == "1") {
+        SPIFFS.remove("/config.json");
+        WiFi.disconnect();
+        wifiManager.resetSettings();
+      } 
+    }
+    if (server.argName(i) == "MQTTHOST")  {
+      server.arg(i).toCharArray(mqtthost, 16);
+    }
+    yield();
+  }
+  saveConfig();
+}
