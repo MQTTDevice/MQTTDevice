@@ -113,3 +113,9 @@ byte mqttnumberoftrys = 3;
 bool mqttCommunication = true;
 int mqtt_chip_key = ESP.getChipId();
 char mqtt_clientid[25];
+
+// loop
+#define SYS_UPDATE  100
+#define UPDATE  1000
+unsigned long lastToggledSys = 0;
+unsigned long lastToggled = 0;

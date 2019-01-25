@@ -41,7 +41,12 @@ class Actor
       if (isPin(pin_actor)) {
         digitalWrite(pin_actor, HIGH);
         pins_used[pin_actor] = false;
-        delay(5);
+        unsigned long last = 0;
+        if (millis() > last + 5)
+        {
+          // get rid off delay
+        }
+        //delay(5);
       }
 
       pin_actor = StringToPin(pin);
@@ -80,18 +85,18 @@ class Actor
         argument_actor.toCharArray(subscribemsg, 50);
         DBG_PRINT("Subscribing to ");
         DBG_PRINTLN(subscribemsg);
-        client.subscribe(subscribemsg);      
+        client.subscribe(subscribemsg);
       }
 
     }
 
     void mqtt_unsubscribe() {
-     if (client.connected()) {
+      if (client.connected()) {
         char subscribemsg[50];
         argument_actor.toCharArray(subscribemsg, 50);
         DBG_PRINT("Unsubscribing from ");
         DBG_PRINTLN(subscribemsg);
-        client.unsubscribe(subscribemsg);      
+        client.unsubscribe(subscribemsg);
       }
     }
 
@@ -154,7 +159,7 @@ void handleActors() {
 void handleRequestActors() {
   StaticJsonBuffer<1024> jsonBuffer;
   JsonArray& actorsResponse = jsonBuffer.createArray();
-  
+
   for (int i = 0; i < numberOfActors; i++) {
     JsonObject& actorResponse = jsonBuffer.createObject();;
     actorResponse["name"] = actors[i].name_actor;
@@ -165,7 +170,7 @@ void handleRequestActors() {
     actorsResponse.add(actorResponse);
     yield();
   }
-  
+
   String response;
   actorsResponse.printTo(response);
   server.send(200, "application/json", response);

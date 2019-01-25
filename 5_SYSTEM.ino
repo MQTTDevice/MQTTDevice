@@ -1,6 +1,11 @@
 void rebootDevice() {
   server.send(200, "text/plain", "rebooting...");
-  delay(1000);
+  unsigned long last = 0;
+  if (millis() > last + 1000)
+  {
+    // get rid off delay
+  }
+  // delay(1000);
   // CAUTION: known (library) issue: only works if you (hardware)button-reset once after flashing the device
   ESP.restart();
 }

@@ -85,7 +85,8 @@ void setupOTA() {
     DBG_PRINTLN("Rebooting...");
   });
   ArduinoOTA.onProgress([](unsigned int progress, unsigned int total) {
-    Serial.printf("OTA in progress: %u%%\r\n", (progress / (total / 100)));
+    DBG_PRINT("OTA in progress: ");
+    DBG_PRINTLN((progress / (total / 100)));
   });
   ArduinoOTA.onError([](ota_error_t error) {
     Serial.printf("Error[%u]: ", error);

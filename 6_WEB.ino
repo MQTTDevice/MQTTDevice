@@ -74,7 +74,12 @@ void mqttreconnect() {
           DBG_PRINT(".. Success. Subscribing.");
           goto Subscribe;
         }
-        delay(5);
+        unsigned long last = 0;
+        if (millis() > last + 5)
+        {
+          // get rid off delay
+        }
+        // delay(5);
       }
       mqttconnectlasttry = millis();
       DBG_PRINT(".. Failed. Trying again in ");
